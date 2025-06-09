@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>United health organization</title>
+    <link rel="icon" href="./img-log/favicon.png" />
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index.css">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <img src="./img-log/nl.png" alt="" style="margin-left: -1.5rem;">
+            <form class="form" onsubmit="validateForm(event)">
+                <input type="email" id="email" class="input" placeholder="Email Address" required>
+                <input type="password" id="accessCode" class="input" placeholder="Access Code" required>
+
+                <!-- Remember Me Checkbox -->
+                <div style="margin: 10px 0;">
+                    <label>
+                        <input type="checkbox" id="rememberMe"> Remember Me
+                    </label>
+                </div>
+
+                <p class="page-link">
+                    <span class="page-link-label"><a href="./forget.html">Forgot Access code?</a></span>
+                </p>
+                <button type="submit" class="form-btn">Log in</button>
+            </form>
+            <p class="sign-up-label" style="text-align: center;">
+                Don't have an account?
+                <span class="sign-up-link"><a href="https://united-health-organisation.surge.sh/">Visit Site</a></span>
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025</p>
+        <p>User Agreement</p>
+        <p>Privacy Policy</p>
+    </footer>
+
+    <script>
+        const users = [
+            {
+                email: "admin@bank.com",
+                accessCode: "admin123",
+                redirectTo: "index.html"
+            },
+            {
+                email: "john@bank.com",
+                accessCode: "john456",
+                redirectTo: "john-home.html"
+            },
+            {
+                email: "jane@bank.com",
+                accessCode: "jane789",
+                redirectTo: "jane-dashboard.html"
+            }
+        ];
+
+        // Load email from localStorage on page load
+        window.onload = function () {
+            const rememberedEmail = localStorage.getItem("rememberedEmail");
+            if (rememberedEmail) {
+                document.getElementById("email").value = rememberedEmail;
+                document.getElementById("rememberMe").checked = true;
+            }
+        };
+
+        function validateForm(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value.trim();
+            const accessCode = document.getElementById("accessCode").value.trim();
+            const rememberMe = document.getElementById("rememberMe").checked;
+
+            const user = users.find(
+                u => u.email === email && u.accessCode === accessCode
+            );
+
+            if (user) {
+                // Save or remove remembered email
+                if (rememberMe) {
+                    localStorage.setItem("rememberedEmail", email);
+                } else {
+                    localStorage.removeItem("rememberedEmail");
+                }
+
+                window.location.href = user.redirectTo;
+            } else {
+                swal("Login Failed", "Invalid email or access code.", "error");
+            }
+        }
+    </script>
+</body>
+
+</html>
